@@ -154,7 +154,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * Sets the active tab
 	 * 
 	 * @param player The player whose Tab should be changed
-	 * @param rootAdvancementThe name of the tab to change to
+	 * @param rootAdvancement The name of the tab to change to
 	 */
 	public static void setActiveTab(Player player, NameKey rootAdvancement) {
 		setActiveTab(player, rootAdvancement, true);
@@ -232,8 +232,8 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 		return useUUID;
 	}
 	
-	private final String noPermission = "§cI'm sorry but you do not have permission to perform this command. Please contact the server administrator if you believe that this is in error.";
-	private final String commandIncompatible = "§cThis Command is incompatible with your Arguments!";
+	private final String noPermission = "Â§cI'm sorry but you do not have permission to perform this command. Please contact the server administrator if you believe that this is in error.";
+	private final String commandIncompatible = "Â§cThis Command is incompatible with your Arguments!";
 	private final List<String> selectors = Arrays.asList("@a", "@p", "@s", "@r");
 	
 	private boolean startsWithSelector(String arg) {
@@ -280,13 +280,13 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 								Advancement advancement = new Advancement(null, new NameKey("toast", "message"), display);
 								advancement.displayToast(player);
 								
-								sender.sendMessage("§aSuccessfully displayed Toast to §b" + player.getName() + "§a!");
+								sender.sendMessage("Â§aSuccessfully displayed Toast to Â§b" + player.getName() + "Â§a!");
 							} else {
-								sender.sendMessage("§c'" + args[1] + "' isn't a valid Item Material");
+								sender.sendMessage("Â§c'" + args[1] + "' isn't a valid Item Material");
 							}
 							
 						} else {
-							sender.sendMessage("§cCan't find Player '§e" + args[0] + "§c'");
+							sender.sendMessage("Â§cCan't find Player 'Â§e" + args[0] + "Â§c'");
 						}
 					} catch(Exception ex) {
 						sender.sendMessage(commandIncompatible);
@@ -294,7 +294,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 					
 					
 				} else {
-					sender.sendMessage("§cUsage: §r" + cmd.getUsage());
+					sender.sendMessage("Â§cUsage: Â§r" + cmd.getUsage());
 				}
 			} else {
 				sender.sendMessage(noPermission);
@@ -341,15 +341,15 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 												manager.revokeCriteria(player, advancement, convertedCriteria);
 											}
 											
-											String criteriaString = "§c" + convertedCriteria[0];
+											String criteriaString = "Â§c" + convertedCriteria[0];
 											if(convertedCriteria.length > 1) {
 												for(String criteria : Arrays.copyOfRange(convertedCriteria, 1, convertedCriteria.length - 1)) {
-													criteriaString += "§a, §c" + criteria;
+													criteriaString += "Â§a, Â§c" + criteria;
 												}
-												criteriaString += " §aand §c" + convertedCriteria[convertedCriteria.length - 1];
+												criteriaString += " Â§aand Â§c" + convertedCriteria[convertedCriteria.length - 1];
 											}
 											
-											sender.sendMessage("§aSuccessfully " + (grant ? "granted" : "revoked") + " Criteria " + criteriaString + " §afor '§e" + advancement.getName() + "§a' " + (grant ? "to" : "from") + " §b" + player.getName());
+											sender.sendMessage("Â§aSuccessfully " + (grant ? "granted" : "revoked") + " Criteria " + criteriaString + " Â§afor 'Â§e" + advancement.getName() + "ï¿½a' " + (grant ? "to" : "from") + " ï¿½b" + player.getName());
 											
 										} else {
 											if(grant) {
@@ -358,21 +358,21 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 												manager.revokeAdvancement(player, advancement);
 											}
 											
-											sender.sendMessage("§aSuccessfully " + (grant ? "granted" : "revoked") + " Advancement '§e" + advancement.getName() + "§a' " + (grant ? "to" : "from") + " §b" + player.getName());
+											sender.sendMessage("Â§aSuccessfully " + (grant ? "granted" : "revoked") + " Advancement 'Â§e" + advancement.getName() + "Â§a' " + (grant ? "to" : "from") + " ï¿½b" + player.getName());
 										}
 										
 									} else {
-										sender.sendMessage("§cAdvancement with Name '§e" + args[2] + "§c' does not exist in '§e" + args[1] + "§c'");
+										sender.sendMessage("Â§cAdvancement with Name 'Â§e" + args[2] + "Â§c' does not exist in 'Â§e" + args[1] + "Â§c'");
 									}
 									
 								} else {
-									sender.sendMessage("§c'§e" + args[1] + "§c' does not contain Player '§e" + args[0] + "§c'");
+									sender.sendMessage("Â§c'Â§e" + args[1] + "Â§c' does not contain Player 'Â§e" + args[0] + "Â§c'");
 								}
 							} else {
-								sender.sendMessage("§cManager with Name '§e" + args[1] + "§c' does not exist");
+								sender.sendMessage("Â§cManager with Name 'Â§e" + args[1] + "Â§c' does not exist");
 							}
 						} else {
-							sender.sendMessage("§cCan't find Player '§e" + args[0] + "§c'");
+							sender.sendMessage("Â§cCan't find Player 'Â§e" + args[0] + "Â§c'");
 						}
 						
 					} catch(Exception ex) {
@@ -380,7 +380,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 					}
 					
 				} else {
-					sender.sendMessage("§cUsage: §r" + cmd.getUsage());
+					sender.sendMessage("Â§cUsage: Â§r" + cmd.getUsage());
 				}
 			} else {
 				sender.sendMessage(noPermission);
