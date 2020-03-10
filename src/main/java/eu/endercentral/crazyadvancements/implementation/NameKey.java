@@ -2,7 +2,7 @@ package eu.endercentral.crazyadvancements.implementation;
 
 import net.minecraft.server.v1_15_R1.MinecraftKey;
 
-//TODO: Isn't implemented with NamespacedKey?
+
 @Deprecated
 public class NameKey {
 
@@ -76,7 +76,8 @@ public class NameKey {
 	 * @return A {@link MinecraftKey} representation of this NameKey
 	 */
 	public MinecraftKey getMinecraftKey() {
-		if(mcKey == null) mcKey = new MinecraftKey(namespace, key);
+		if(mcKey == null)
+			mcKey = new MinecraftKey(namespace, key);
 		return mcKey;
 	}
 
