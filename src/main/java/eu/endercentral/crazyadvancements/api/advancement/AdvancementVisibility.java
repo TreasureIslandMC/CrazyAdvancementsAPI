@@ -2,7 +2,6 @@ package eu.endercentral.crazyadvancements.api.advancement;
 
 import java.util.Arrays;
 
-import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
 import org.bukkit.entity.Player;
 
 public abstract class AdvancementVisibility {
@@ -10,7 +9,7 @@ public abstract class AdvancementVisibility {
 	public static final AdvancementVisibility ALWAYS = new AdvancementVisibility("ALWAYS") {
 
 		@Override
-		public boolean isVisible(Player player, CrazyAdvancement advancement) {
+		public boolean isVisible(Player player, Advancement advancement) {
 			return true;
 		}
 	};
@@ -18,9 +17,9 @@ public abstract class AdvancementVisibility {
 	public static final AdvancementVisibility PARENT_GRANTED = new AdvancementVisibility("PARENT_GRANTED") {
 
 		@Override
-		public boolean isVisible(Player player, CrazyAdvancement advancement) {
+		public boolean isVisible(Player player, Advancement advancement) {
 			if (advancement.isGranted(player)) return true;
-			CrazyAdvancement parent = advancement.getParent();
+			Advancement parent = advancement.getParent();
 
 			return parent == null || parent.isGranted(player);
 		}
@@ -28,13 +27,13 @@ public abstract class AdvancementVisibility {
 	public static final AdvancementVisibility VANILLA = new AdvancementVisibility("VANILLA") {
 
 		@Override
-		public boolean isVisible(Player player, CrazyAdvancement advancement) {
+		public boolean isVisible(Player player, Advancement advancement) {
 			if (advancement.isGranted(player)) return true;
 
-			CrazyAdvancement parent = advancement.getParent();
+			Advancement parent = advancement.getParent();
 
 			if (parent != null && !parent.isGranted(player)) {
-				CrazyAdvancement grandParent = parent.getParent();
+				Advancement grandParent = parent.getParent();
 
 				return grandParent == null || grandParent.getParent() == null || grandParent.isGranted(player);
 			}
@@ -46,7 +45,7 @@ public abstract class AdvancementVisibility {
 	public static final AdvancementVisibility HIDDEN = new AdvancementVisibility("HIDDEN") {
 
 		@Override
-		public boolean isVisible(Player player, CrazyAdvancement advancement) {
+		public boolean isVisible(Player player, Advancement advancement) {
 			return advancement.isGranted(player);
 		}
 	};
@@ -66,7 +65,7 @@ public abstract class AdvancementVisibility {
 	 * @param advancement Advancement to check
 	 * @return true if advancement should be visible
 	 */
-	public abstract boolean isVisible(Player player, CrazyAdvancement advancement);
+	public abstract boolean isVisible(Player player, Advancement advancement);
 
 	/**
 	 * @return true if advancement should always be visible if any child should be visible, defaults to true
