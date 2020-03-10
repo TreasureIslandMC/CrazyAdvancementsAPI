@@ -10,6 +10,7 @@ import java.util.List;
 
 import eu.endercentral.crazyadvancements.api.advancement.AdvancementVisibility;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementFrame;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementPacketReceiver;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
 import org.bukkit.Bukkit;
@@ -30,7 +31,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay.AdvancementFrame;
 import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutSelectAdvancementTab;
@@ -62,19 +62,15 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 		packetReciever = new CrazyAdvancementPacketReceiver();
 		
 		//Registering Players
-		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-			
-			@Override
-			public void run() {
-				String path = CrazyAdvancements.getInstance().getDataFolder().getAbsolutePath() + File.separator + "advancements" + File.separator + "main" + File.separator;
-				File saveLocation = new File(path);
-				loadAdvancements(saveLocation);
-				
-				for(Player player : Bukkit.getOnlinePlayers()) {
-					fileAdvancementManager.addPlayer(player);
-					packetReciever.initPlayer(player);
-					initiatedPlayers.add(player);
-				}
+		Bukkit.getScheduler().runTaskLater(this, () -> {
+			String path = CrazyAdvancements.getInstance().getDataFolder().getAbsolutePath() + File.separator + "advancements" + File.separator + "main" + File.separator;
+			File saveLocation = new File(path);
+			loadAdvancements(saveLocation);
+
+			for(Player player : Bukkit.getOnlinePlayers()) {
+				fileAdvancementManager.addPlayer(player);
+				packetReciever.initPlayer(player);
+				initiatedPlayers.add(player);
 			}
 		}, 5);
 		//Registering Events
@@ -185,13 +181,9 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
-		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-			
-			@Override
-			public void run() {
-				fileAdvancementManager.addPlayer(player);
-				initiatedPlayers.add(player);
-			}
+		Bukkit.getScheduler().runTaskLater(this, () -> {
+			fileAdvancementManager.addPlayer(player);
+			initiatedPlayers.add(player);
 		}, 5);
 		packetReciever.initPlayer(player);
 	}
@@ -280,7 +272,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 									}
 								}
 								
-								CrazyAdvancementDisplay display = new CrazyAdvancementDisplay(mat, message, "", AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS);
+								CrazyAdvancementDisplay display = new CrazyAdvancementDisplay(mat, message, "", CrazyAdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS);
 								CrazyAdvancement advancement = new CrazyAdvancement(null, new NameKey("toast", "message"), display);
 								advancement.displayToast(player);
 								
