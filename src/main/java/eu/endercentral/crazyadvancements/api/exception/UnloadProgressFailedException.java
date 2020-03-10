@@ -1,12 +1,9 @@
-package eu.endercentral.crazy_advancements.exception;
+package eu.endercentral.crazyadvancements.api.exception;
 
 import java.util.UUID;
 
 public class UnloadProgressFailedException extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5052062325162108824L;
 	
 	private UUID uuid;

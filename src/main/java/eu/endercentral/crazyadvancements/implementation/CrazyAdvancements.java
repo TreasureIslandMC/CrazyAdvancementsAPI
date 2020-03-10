@@ -1,4 +1,4 @@
-package eu.endercentral.crazy_advancements;
+package eu.endercentral.crazyadvancements.implementation;
 
 import java.io.File;
 import java.io.FileReader;
@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import eu.endercentral.crazyadvancements.api.advancement.AdvancementVisibility;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementPacketReceiver;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Warning;
@@ -26,8 +30,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay.AdvancementFrame;
+import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutSelectAdvancementTab;
 
@@ -35,11 +39,11 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	
 	private static CrazyAdvancements instance;
 	
-	private AdvancementManager fileAdvancementManager;
-	private static AdvancementPacketReceiver packetReciever;
+	private CrazyAdvancementManager fileAdvancementManager;
+	private static CrazyAdvancementPacketReceiver packetReciever;
 	
 	private static ArrayList<Player> initiatedPlayers = new ArrayList<>();
-	private static ArrayList<AdvancementManager> managers = new ArrayList<>();
+	private static ArrayList<CrazyAdvancementManager> managers = new ArrayList<>();
 	private static boolean announceAdvancementMessages = true;
 	private static HashMap<String, NameKey> openedTabs = new HashMap<>();
 	
@@ -50,12 +54,12 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	@Override
 	public void onLoad() {
 		instance = this;
-		fileAdvancementManager = AdvancementManager.getNewAdvancementManager();
+		fileAdvancementManager = CrazyAdvancementManager.getNewAdvancementManager();
 	}
 	
 	@Override
 	public void onEnable() {
-		packetReciever = new AdvancementPacketReceiver();
+		packetReciever = new CrazyAdvancementPacketReceiver();
 		
 		//Registering Players
 		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
@@ -98,7 +102,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 					JsonElement element = parser.parse(os);
 					os.close();
 					
-					Advancement add = Advancement.fromJSON(element);
+					CrazyAdvancement add = CrazyAdvancement.fromJSON(element);
 					fileAdvancementManager.addAdvancement(add);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -109,8 +113,8 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
-		for(AdvancementManager manager : managers) {
-			for(Advancement advancement : manager.getAdvancements()) {
+		for(CrazyAdvancementManager manager : managers) {
+			for(CrazyAdvancement advancement : manager.getAdvancements()) {
 				manager.removeAdvancement(advancement);
 			}
 		}
@@ -127,8 +131,8 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static AdvancementManager getNewAdvancementManager(Player... players) {
-		return AdvancementManager.getNewAdvancementManager(players);
+	public static CrazyAdvancementManager getNewAdvancementManager(Player... players) {
+		return CrazyAdvancementManager.getNewAdvancementManager(players);
 	}
 	
 	/**
@@ -160,7 +164,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 		setActiveTab(player, rootAdvancement, true);
 	}
 	
-	static void setActiveTab(Player player, NameKey rootAdvancement, boolean update) {
+	public static void setActiveTab(Player player, NameKey rootAdvancement, boolean update) {
 		if(update) {
 			PacketPlayOutSelectAdvancementTab packet = new PacketPlayOutSelectAdvancementTab(rootAdvancement == null ? null : rootAdvancement.getMinecraftKey());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
@@ -276,8 +280,8 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 									}
 								}
 								
-								AdvancementDisplay display = new AdvancementDisplay(mat, message, "", AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS);
-								Advancement advancement = new Advancement(null, new NameKey("toast", "message"), display);
+								CrazyAdvancementDisplay display = new CrazyAdvancementDisplay(mat, message, "", AdvancementFrame.TASK, true, true, AdvancementVisibility.ALWAYS);
+								CrazyAdvancement advancement = new CrazyAdvancement(null, new NameKey("toast", "message"), display);
 								advancement.displayToast(player);
 								
 								sender.sendMessage("§aSuccessfully displayed Toast to §b" + player.getName() + "§a!");
@@ -322,12 +326,12 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 						Player player = args[0].equalsIgnoreCase("self") ? (sender instanceof Player) ? (Player) sender : (sender instanceof ProxiedNativeCommandSender) ? (Player) ((ProxiedNativeCommandSender)sender).getCallee() : null : Bukkit.getPlayer(args[0]);
 						
 						if(player != null && player.isOnline()) {
-							AdvancementManager manager = args[1].equalsIgnoreCase("file") ? fileAdvancementManager : AdvancementManager.getAccessibleManager(args[1]);
+							CrazyAdvancementManager manager = args[1].equalsIgnoreCase("file") ? fileAdvancementManager : CrazyAdvancementManager.getAccessibleManager(args[1]);
 							
 							if(manager != null) {
 								
 								if(manager.getPlayers().contains(player)) {
-									Advancement advancement = manager.getAdvancement(new NameKey(args[2]));
+									CrazyAdvancement advancement = manager.getAdvancement(new NameKey(args[2]));
 									
 									if(advancement != null) {
 										
@@ -435,24 +439,24 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 				if("file".startsWith(args[1])) {
 					tab.add("file");
 				}
-				for(AdvancementManager manager : AdvancementManager.getAccessibleManagers()) {
+				for(CrazyAdvancementManager manager : CrazyAdvancementManager.getAccessibleManagers()) {
 					if(manager.getName().startsWith(args[1].toLowerCase())) {
 						tab.add(manager.getName());
 					}
 				}
 			} else if(args.length == 3) {
-				AdvancementManager manager = AdvancementManager.getAccessibleManager(args[1]);
+				CrazyAdvancementManager manager = CrazyAdvancementManager.getAccessibleManager(args[1]);
 				if(manager != null) {
-					for(Advancement advancement : manager.getAdvancements()) {
+					for(CrazyAdvancement advancement : manager.getAdvancements()) {
 						if(advancement.getName().toString().startsWith(args[2].toLowerCase()) || advancement.getName().getKey().startsWith(args[2].toLowerCase())) {
 							tab.add(advancement.getName().toString());
 						}
 					}
 				}
 			} else if(args.length >= 4) {
-				AdvancementManager manager = AdvancementManager.getAccessibleManager(args[1]);
+				CrazyAdvancementManager manager = CrazyAdvancementManager.getAccessibleManager(args[1]);
 				if(manager != null) {
-					Advancement advancement = manager.getAdvancement(new NameKey(args[2]));
+					CrazyAdvancement advancement = manager.getAdvancement(new NameKey(args[2]));
 					if(advancement != null) {
 						for(String criterion : advancement.getSavedCriteria().keySet()) {
 							if(criterion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {

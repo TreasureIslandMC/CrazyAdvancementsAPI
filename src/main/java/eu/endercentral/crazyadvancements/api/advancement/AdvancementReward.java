@@ -1,4 +1,4 @@
-package eu.endercentral.crazy_advancements;
+package eu.endercentral.crazyadvancements.api.advancement;
 
 import org.bukkit.entity.Player;
 

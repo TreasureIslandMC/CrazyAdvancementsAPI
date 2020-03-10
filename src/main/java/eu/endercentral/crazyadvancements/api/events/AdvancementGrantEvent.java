@@ -1,11 +1,11 @@
-package eu.endercentral.crazy_advancements.events;
+package eu.endercentral.crazyadvancements.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
+import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
 
 public class AdvancementGrantEvent extends Event {
 	
@@ -21,12 +21,12 @@ public class AdvancementGrantEvent extends Event {
 	}
 	
 	
-	private final AdvancementManager manager;
-	private final Advancement advancement;
+	private final CrazyAdvancementManager manager;
+	private final CrazyAdvancement advancement;
 	private final Player player;
 	private boolean displayMessage;
 	
-	public AdvancementGrantEvent(AdvancementManager manager, Advancement advancement, Player player, boolean displayMessage) {
+	public AdvancementGrantEvent(CrazyAdvancementManager manager, CrazyAdvancement advancement, Player player, boolean displayMessage) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.player = player;
@@ -37,7 +37,7 @@ public class AdvancementGrantEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementManager getManager() {
+	public CrazyAdvancementManager getManager() {
 		return manager;
 	}
 	
@@ -45,7 +45,7 @@ public class AdvancementGrantEvent extends Event {
 	 * 
 	 * @return The Advancement that has been granted
 	 */
-	public Advancement getAdvancement() {
+	public CrazyAdvancement getAdvancement() {
 		return advancement;
 	}
 	

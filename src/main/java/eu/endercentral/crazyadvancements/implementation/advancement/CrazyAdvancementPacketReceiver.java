@@ -1,15 +1,17 @@
-package eu.endercentral.crazy_advancements;
+package eu.endercentral.crazyadvancements.implementation.advancement;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
+import eu.endercentral.crazyadvancements.implementation.CrazyAdvancements;
+import eu.endercentral.crazyadvancements.implementation.NameKey;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import eu.endercentral.crazy_advancements.events.AdvancementScreenCloseEvent;
-import eu.endercentral.crazy_advancements.events.AdvancementTabChangeEvent;
+import eu.endercentral.crazyadvancements.api.events.AdvancementScreenCloseEvent;
+import eu.endercentral.crazyadvancements.api.events.AdvancementTabChangeEvent;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -20,7 +22,7 @@ import net.minecraft.server.v1_15_R1.Packet;
 import net.minecraft.server.v1_15_R1.PacketPlayInAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayInAdvancements.Status;
 
-public class AdvancementPacketReceiver {
+public class CrazyAdvancementPacketReceiver {
 	
 	private static HashMap<String, ChannelHandler> handlers = new HashMap<>();
 	private static Field channelField;

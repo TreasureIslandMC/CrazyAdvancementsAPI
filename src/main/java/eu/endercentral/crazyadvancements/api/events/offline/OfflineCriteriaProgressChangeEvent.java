@@ -1,12 +1,12 @@
-package eu.endercentral.crazy_advancements.events.offline;
+package eu.endercentral.crazyadvancements.api.events.offline;
 
 import java.util.UUID;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
+import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
 
 public class OfflineCriteriaProgressChangeEvent extends Event {
 	
@@ -22,13 +22,13 @@ public class OfflineCriteriaProgressChangeEvent extends Event {
 	}
 	
 	
-	private final AdvancementManager manager;
-	private final Advancement advancement;
+	private final CrazyAdvancementManager manager;
+	private final CrazyAdvancement advancement;
 	private final UUID uuid;
 	private final int progressBefore;
 	private int progress;
 	
-	public OfflineCriteriaProgressChangeEvent(AdvancementManager manager, Advancement advancement, UUID uuid, int progressBefore, int progress) {
+	public OfflineCriteriaProgressChangeEvent(CrazyAdvancementManager manager, CrazyAdvancement advancement, UUID uuid, int progressBefore, int progress) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.uuid = uuid;;
@@ -40,7 +40,7 @@ public class OfflineCriteriaProgressChangeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public AdvancementManager getManager() {
+	public CrazyAdvancementManager getManager() {
 		return manager;
 	}
 	
@@ -48,7 +48,7 @@ public class OfflineCriteriaProgressChangeEvent extends Event {
 	 * 
 	 * @return The Advancement that has been granted
 	 */
-	public Advancement getAdvancement() {
+	public CrazyAdvancement getAdvancement() {
 		return advancement;
 	}
 	

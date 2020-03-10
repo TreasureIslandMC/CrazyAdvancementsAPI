@@ -1,4 +1,4 @@
-package eu.endercentral.crazy_advancements;
+package eu.endercentral.crazyadvancements.implementation;
 
 import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 import net.minecraft.server.v1_15_R1.IChatBaseComponent.ChatSerializer;

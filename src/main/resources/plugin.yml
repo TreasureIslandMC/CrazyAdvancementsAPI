@@ -1,4 +1,4 @@
-main: eu.endercentral.crazy_advancements.CrazyAdvancements
+main: eu.endercentral.crazy_advancements.implementation.CrazyAdvancements
 name: CrazyAdvancementsAPI
 version: ${project.version}
 api-version: 1.13

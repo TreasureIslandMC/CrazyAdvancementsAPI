@@ -1,12 +1,12 @@
-package eu.endercentral.crazy_advancements.events.offline;
+package eu.endercentral.crazyadvancements.api.events.offline;
 
 import java.util.UUID;
 
+import eu.endercentral.crazyadvancements.api.manager.AdvancementManager;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import eu.endercentral.crazy_advancements.Advancement;
-import eu.endercentral.crazy_advancements.manager.AdvancementManager;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
 
 public class OfflineAdvancementGrantEvent extends Event {
 	
@@ -23,17 +23,16 @@ public class OfflineAdvancementGrantEvent extends Event {
 	
 	
 	private final AdvancementManager manager;
-	private final Advancement advancement;
+	private final CrazyAdvancement advancement;
 	private final UUID uuid;
 	
-	public OfflineAdvancementGrantEvent(AdvancementManager manager, Advancement advancement, UUID uuid) {
+	public OfflineAdvancementGrantEvent(AdvancementManager manager, CrazyAdvancement advancement, UUID uuid) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.uuid = uuid;
 	}
 	
 	/**
-	 * 
 	 * @return The Manager this event has been fired from
 	 */
 	public AdvancementManager getManager() {
@@ -44,7 +43,7 @@ public class OfflineAdvancementGrantEvent extends Event {
 	 * 
 	 * @return The Advancement that has been granted
 	 */
-	public Advancement getAdvancement() {
+	public CrazyAdvancement getAdvancement() {
 		return advancement;
 	}
 	

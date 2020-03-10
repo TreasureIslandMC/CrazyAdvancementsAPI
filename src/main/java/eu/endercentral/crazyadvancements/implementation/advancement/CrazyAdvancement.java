@@ -1,4 +1,4 @@
-package eu.endercentral.crazy_advancements;
+package eu.endercentral.crazyadvancements.implementation.advancement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +12,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import eu.endercentral.crazyadvancements.api.advancement.AdvancementReward;
+import eu.endercentral.crazyadvancements.api.advancement.AdvancementVisibility;
+import eu.endercentral.crazyadvancements.implementation.NameKey;
 import org.bukkit.Bukkit;
 import org.bukkit.Warning;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
@@ -23,7 +26,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.SerializedName;
 
-import eu.endercentral.crazy_advancements.AdvancementDisplay.AdvancementFrame;
+import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay.AdvancementFrame;
 import net.minecraft.server.v1_15_R1.AdvancementProgress;
 import net.minecraft.server.v1_15_R1.AdvancementRewards;
 import net.minecraft.server.v1_15_R1.ChatModifier;
@@ -37,20 +40,20 @@ import net.minecraft.server.v1_15_R1.MinecraftKey;
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
 
-public class Advancement {
+public class CrazyAdvancement {
 	
-	private static HashMap<String, Advancement> advancementMap = new HashMap<>();
+	private static HashMap<String, CrazyAdvancement> advancementMap = new HashMap<>();
 	
 	private transient NameKey name;
 	@SerializedName("name")
 	private String nameKey;
 	
-	private AdvancementDisplay display;
+	private CrazyAdvancementDisplay display;
 	
-	private transient Advancement parent;
+	private transient CrazyAdvancement parent;
 	@SerializedName("parent")
 	private String parentKey;
-	private transient HashSet<Advancement> children = new HashSet<>();
+	private transient HashSet<CrazyAdvancement> children = new HashSet<>();
 	
 	@SerializedName("criteriaAmount")
 	private int criteria = 1;
@@ -66,12 +69,12 @@ public class Advancement {
 	/**
 	 * Generates an Advancement
 	 * 
-	 * @param json JSON representation of {@link Advancement} instance
-	 * @return Generated {@link Advancement}
+	 * @param json JSON representation of {@link CrazyAdvancement} instance
+	 * @return Generated {@link CrazyAdvancement}
 	 */
-	public static Advancement fromJSON(String json) {
+	public static CrazyAdvancement fromJSON(String json) {
 		Gson gson = new GsonBuilder().setLenient().create();
-		Advancement created = gson.fromJson(json, Advancement.class);
+		CrazyAdvancement created = gson.fromJson(json, CrazyAdvancement.class);
 		created.loadAfterGSON();
 		return created;
 	}
@@ -79,12 +82,12 @@ public class Advancement {
 	/**
 	 * Generates an Advancement
 	 * 
-	 * @param json JSON representation of {@link Advancement} instance
-	 * @return Generated {@link Advancement}
+	 * @param json JSON representation of {@link CrazyAdvancement} instance
+	 * @return Generated {@link CrazyAdvancement}
 	 */
-	public static Advancement fromJSON(JsonElement json) {
+	public static CrazyAdvancement fromJSON(JsonElement json) {
 		Gson gson = new GsonBuilder().setLenient().create();
-		Advancement created = gson.fromJson(json, Advancement.class);
+		CrazyAdvancement created = gson.fromJson(json, CrazyAdvancement.class);
 		created.loadAfterGSON();
 		return created;
 	}
@@ -99,13 +102,13 @@ public class Advancement {
 		this.display.setVisibility(AdvancementVisibility.parseVisibility(this.display.visibilityIdentifier));
 	}
 	
-	private void addChildren(Advancement adv) {
+	private void addChildren(CrazyAdvancement adv) {
 		children.add(adv);
 	}
 	
 	/**
 	 * 
-	 * @return JSON representation of current {@link Advancement} instance
+	 * @return JSON representation of current {@link CrazyAdvancement} instance
 	 */
 	public String getAdvancementJSON() {
 		Gson gson = new Gson();
@@ -118,7 +121,7 @@ public class Advancement {
 	 * @param name Unique Name
 	 * @param display
 	 */
-	public Advancement(@Nullable Advancement parent, NameKey name, AdvancementDisplay display) {
+	public CrazyAdvancement(@Nullable CrazyAdvancement parent, NameKey name, CrazyAdvancementDisplay display) {
 		this.parent = parent;
 		if(this.parent != null) this.parent.addChildren(this);
 		this.parentKey = parent == null ? null : parent.getName().toString();
@@ -132,7 +135,7 @@ public class Advancement {
 	 * @return The parent Advancement
 	 */
 	@Nullable
-	public Advancement getParent() {
+	public CrazyAdvancement getParent() {
 		return parent;
 	}
 	
@@ -181,7 +184,7 @@ public class Advancement {
 		return name;
 	}
 	
-	public AdvancementDisplay getDisplay() {
+	public CrazyAdvancementDisplay getDisplay() {
 		return display;
 	}
 	
@@ -259,7 +262,7 @@ public class Advancement {
 	public void displayToast(Player player) {
 		MinecraftKey notName = new MinecraftKey("eu.endercentral", "notification");
 		
-		AdvancementDisplay display = getDisplay();
+		CrazyAdvancementDisplay display = getDisplay();
 		
 		AdvancementRewards advRewards = new AdvancementRewards(0, new MinecraftKey[0], new MinecraftKey[0], null);
 		ItemStack icon = CraftItemStack.asNMSCopy(display.getIcon());
@@ -313,8 +316,8 @@ public class Advancement {
 	 * 
 	 * @return All direct children
 	 */
-	public HashSet<Advancement> getChildren() {
-		return (HashSet<Advancement>) children.clone();
+	public HashSet<CrazyAdvancement> getChildren() {
+		return (HashSet<CrazyAdvancement>) children.clone();
 	}
 	
 	
@@ -322,9 +325,9 @@ public class Advancement {
 	
 	/**
 	 * 
-	 * @return Root {@link Advancement}
+	 * @return Root {@link CrazyAdvancement}
 	 */
-	public Advancement getRootAdvancement() {
+	public CrazyAdvancement getRootAdvancement() {
 		if(parent == null) {
 			return this;
 		} else {
@@ -344,17 +347,17 @@ public class Advancement {
 	 * 
 	 * @return All parents and children
 	 */
-	public List<Advancement> getRow() {
-		List<Advancement> row = new ArrayList<>();
+	public List<CrazyAdvancement> getRow() {
+		List<CrazyAdvancement> row = new ArrayList<>();
 		row.add(this);
 		if(getParent() != null) {
-			for(Advancement untilRow : getParent().getRowUntil()) {
+			for(CrazyAdvancement untilRow : getParent().getRowUntil()) {
 				if(!row.contains(untilRow)) row.add(untilRow);
 			}
 			Collections.reverse(row);
 		}
-		for(Advancement child : getChildren()) {
-			for(Advancement afterRow : child.getRowAfter()) {
+		for(CrazyAdvancement child : getChildren()) {
+			for(CrazyAdvancement afterRow : child.getRowAfter()) {
 				if(!row.contains(afterRow)) row.add(afterRow);
 			}
 		}
@@ -365,11 +368,11 @@ public class Advancement {
 	 * 
 	 * @return All parents
 	 */
-	public List<Advancement> getRowUntil() {
-		List<Advancement> row = new ArrayList<>();
+	public List<CrazyAdvancement> getRowUntil() {
+		List<CrazyAdvancement> row = new ArrayList<>();
 		row.add(this);
 		if(getParent() != null) {
-			for(Advancement untilRow : getParent().getRowUntil()) {
+			for(CrazyAdvancement untilRow : getParent().getRowUntil()) {
 				if(!row.contains(untilRow)) row.add(untilRow);
 			}
 		}
@@ -380,11 +383,11 @@ public class Advancement {
 	 * 
 	 * @return All children
 	 */
-	public List<Advancement> getRowAfter() {
-		List<Advancement> row = new ArrayList<>();
+	public List<CrazyAdvancement> getRowAfter() {
+		List<CrazyAdvancement> row = new ArrayList<>();
 		row.add(this);
-		for(Advancement child : getChildren()) {
-			for(Advancement afterRow : child.getRowAfter()) {
+		for(CrazyAdvancement child : getChildren()) {
+			for(CrazyAdvancement afterRow : child.getRowAfter()) {
 				if(!row.contains(afterRow)) row.add(afterRow);
 			}
 		}
@@ -397,7 +400,7 @@ public class Advancement {
 	 * @return true if any parent is granted
 	 */
 	public boolean isAnythingGrantedUntil(Player player) {
-		for(Advancement until : getRowUntil()) {
+		for(CrazyAdvancement until : getRowUntil()) {
 			if(until.isGranted(player)) return true;
 		}
 		return false;
@@ -409,7 +412,7 @@ public class Advancement {
 	 * @return true if any child is granted
 	 */
 	public boolean isAnythingGrantedAfter(Player player) {
-		for(Advancement after : getRowAfter()) {
+		for(CrazyAdvancement after : getRowAfter()) {
 			if(after.isGranted(player)) return true;
 		}
 		return false;
@@ -540,7 +543,7 @@ public class Advancement {
 	/**
 	 * 
 	 * @param key Key to check
-	 * @return true if {@link Advancement} name and key share the same namespace and name
+	 * @return true if {@link CrazyAdvancement} name and key share the same namespace and name
 	 */
 	public boolean hasName(NameKey key) {
 		return key.getNamespace().equalsIgnoreCase(name.getNamespace()) && key.getKey().equalsIgnoreCase(name.getKey());

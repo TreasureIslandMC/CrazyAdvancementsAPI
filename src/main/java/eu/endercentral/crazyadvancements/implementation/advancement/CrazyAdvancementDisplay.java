@@ -1,7 +1,10 @@
-package eu.endercentral.crazy_advancements;
+package eu.endercentral.crazyadvancements.implementation.advancement;
 
 import javax.annotation.Nullable;
 
+import eu.endercentral.crazyadvancements.api.advancement.AdvancementVisibility;
+import eu.endercentral.crazyadvancements.implementation.CrazyAdvancements;
+import eu.endercentral.crazyadvancements.implementation.JSONMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
 
 import net.minecraft.server.v1_15_R1.AdvancementFrameType;
 
-public class AdvancementDisplay {
+public class CrazyAdvancementDisplay {
 	
 	@SerializedName("icon")
 	private Material iconID;
@@ -22,7 +25,7 @@ public class AdvancementDisplay {
 	private transient AdvancementVisibility vis;
 	private String backgroundTexture;
 	private float x = 0, y = 0, tabWidth = 0, tabHeight = 0;
-	private transient Advancement positionOrigin;
+	private transient CrazyAdvancement positionOrigin;
 	
 	@SerializedName("visibility")
 	public String visibilityIdentifier = "VANILLA";
@@ -39,7 +42,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(Material icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(Material icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = new ItemStack(icon);
 		this.iconID = icon;
 		this.title = title;
@@ -60,7 +63,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(Material icon, String title, String description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(Material icon, String title, String description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = new ItemStack(icon);
 		this.iconID = icon;
 		if(title.contains("§")) title += "§a";
@@ -83,7 +86,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(Material icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(Material icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = new ItemStack(icon);
 		this.iconID = icon;
 		this.title = title;
@@ -106,7 +109,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(Material icon, String title, String description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(Material icon, String title, String description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = new ItemStack(icon);
 		this.iconID = icon;
 		if(title.contains("§")) title += "§a";
@@ -131,7 +134,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(ItemStack icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(ItemStack icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = icon;
 		this.iconID = icon.getType();
 		this.title = title;
@@ -152,7 +155,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(ItemStack icon, String title, String description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(ItemStack icon, String title, String description, AdvancementFrame frame, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = icon;
 		this.iconID = icon.getType();
 		if(title.contains("�")) title += "�a";
@@ -175,7 +178,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(ItemStack icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(ItemStack icon, JSONMessage title, JSONMessage description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = icon;
 		this.iconID = icon.getType();
 		this.title = title;
@@ -198,7 +201,7 @@ public class AdvancementDisplay {
 	 * @param announceChat Should advancements be announced in chat
 	 * @param visibility When an advancement is visible
 	 */
-	public AdvancementDisplay(ItemStack icon, String title, String description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
+	public CrazyAdvancementDisplay(ItemStack icon, String title, String description, AdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = icon;
 		this.iconID = icon.getType();
 		if(title.contains("�")) title += "�a";
@@ -361,10 +364,10 @@ public class AdvancementDisplay {
 	/**
 	 * 
 	 * @param player Player to check
-	 * @param advancement Advancement to check (because {@link AdvancementDisplay} is not bound to one advancement)
+	 * @param advancement Advancement to check (because {@link CrazyAdvancementDisplay} is not bound to one advancement)
 	 * @return true if it should be currently visible
 	 */
-	public boolean isVisible(Player player, Advancement advancement) {
+	public boolean isVisible(Player player, CrazyAdvancement advancement) {
 		AdvancementVisibility visibility = getVisibility();
 		return visibility.isVisible(player, advancement) || advancement.isGranted(player) || (visibility.isAlwaysVisibleWhenAdvancementAfterIsVisible() && advancement.isAnythingGrantedAfter(player));
 	}
@@ -373,7 +376,7 @@ public class AdvancementDisplay {
 	 * 
 	 * @return the advancement that marks the origin of the coordinates
 	 */
-	public Advancement getPositionOrigin() {
+	public CrazyAdvancement getPositionOrigin() {
 		return positionOrigin;
 	}
 	
@@ -517,7 +520,7 @@ public class AdvancementDisplay {
 	 * 
 	 * @param positionOrigin New position origin
 	 */
-	public void setPositionOrigin(Advancement positionOrigin) {
+	public void setPositionOrigin(CrazyAdvancement positionOrigin) {
 		this.positionOrigin = positionOrigin;
 	}
 	
