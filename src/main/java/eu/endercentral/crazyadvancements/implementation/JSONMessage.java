@@ -8,7 +8,6 @@ public class JSONMessage {
 	private final String json;
 	
 	/**
-	 * 
 	 * @param json A JSON representation of an ingame Message {@link <a href="https://github.com/skylinerw/guides/blob/master/java/text%20component.md">Read More</a>}
 	 */
 	public JSONMessage(String json) {
@@ -16,7 +15,6 @@ public class JSONMessage {
 	}
 	
 	/**
-	 * 
 	 * @return the JSON representation of an ingame Message
 	 */
 	public String getJson() {
@@ -24,7 +22,6 @@ public class JSONMessage {
 	}
 	
 	/**
-	 * 
 	 * @return An {@link IChatBaseComponent} representation of an ingame Message
 	 */
 	public IChatBaseComponent getBaseComponent() {

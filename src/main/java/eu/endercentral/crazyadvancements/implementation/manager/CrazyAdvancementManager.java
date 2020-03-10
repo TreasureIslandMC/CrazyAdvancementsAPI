@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import eu.endercentral.crazyadvancements.api.advancement.Advancement;
 import eu.endercentral.crazyadvancements.api.manager.AdvancementManager;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay;
 import org.apache.commons.lang.Validate;
@@ -564,9 +565,9 @@ public class CrazyAdvancementManager implements AdvancementManager {
 	 * @param from   Advancement to check from
 	 */
 	public void updateAllPossiblyAffectedVisibilities(Player player, CrazyAdvancement from) {
-		List<CrazyAdvancement> updated = from.getRow();
-		for (CrazyAdvancement adv : updated) {
-			updateVisibility(player, adv);
+		List<Advancement> updated = from.getRow();
+		for (Advancement adv : updated) {
+			updateVisibility(player, (CrazyAdvancement) adv);
 		}
 	}
 
@@ -1759,6 +1760,7 @@ public class CrazyAdvancementManager implements AdvancementManager {
 	 * @param uuid         Affected Player UUID
 	 * @param advancements Specific Advancements
 	 */
+	@Override
 	public void unloadProgress(UUID uuid, CrazyAdvancement... advancements) {
 		if (isOnline(uuid)) {
 			throw new UnloadProgressFailedException(uuid);

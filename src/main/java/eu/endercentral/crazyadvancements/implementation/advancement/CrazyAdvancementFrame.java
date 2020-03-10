@@ -2,9 +2,6 @@ package eu.endercentral.crazyadvancements.implementation.advancement;
 
 import net.minecraft.server.v1_15_R1.AdvancementFrameType;
 
-/**
- * @author sarhatabaot
- */
 public enum CrazyAdvancementFrame {
 	TASK(AdvancementFrameType.TASK),
 	GOAL(AdvancementFrameType.GOAL),

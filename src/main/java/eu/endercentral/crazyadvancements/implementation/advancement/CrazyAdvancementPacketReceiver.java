@@ -3,7 +3,10 @@ package eu.endercentral.crazyadvancements.implementation.advancement;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import eu.endercentral.crazyadvancements.api.network.AdvancementPacketReceiver;
+import eu.endercentral.crazyadvancements.api.network.PacketReceivingHandler;
 import eu.endercentral.crazyadvancements.implementation.CrazyAdvancements;
 import eu.endercentral.crazyadvancements.implementation.NameKey;
 import org.bukkit.Bukkit;
@@ -22,7 +25,7 @@ import net.minecraft.server.v1_15_R1.Packet;
 import net.minecraft.server.v1_15_R1.PacketPlayInAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayInAdvancements.Status;
 
-public class CrazyAdvancementPacketReceiver {
+public class CrazyAdvancementPacketReceiver implements AdvancementPacketReceiver {
 	
 	private static HashMap<String, ChannelHandler> handlers = new HashMap<>();
 	private static Field channelField;
@@ -36,11 +39,8 @@ public class CrazyAdvancementPacketReceiver {
 			}
 		}
 	}
-	
-	interface PacketReceivingHandler {
-		public boolean handle(Player p, PacketPlayInAdvancements packet);
-	}
-	
+
+	@Override
 	public ChannelHandler listen(final Player p, final PacketReceivingHandler handler) {
 		Channel ch = getNettyChannel(p);
 		ChannelPipeline pipe = ch.pipeline();
@@ -64,7 +64,7 @@ public class CrazyAdvancementPacketReceiver {
 		
 		return handle;
 	}
-	
+	@Override
 	public Channel getNettyChannel(Player p) {
 	    NetworkManager manager = ((CraftPlayer)p).getHandle().playerConnection.networkManager;
 	    Channel channel = null;
@@ -75,7 +75,8 @@ public class CrazyAdvancementPacketReceiver {
 	    }
 	    return channel;
 	}
-	
+
+	@Override
 	public boolean close(Player p, ChannelHandler handler) {
 	    try {
 	        ChannelPipeline pipe = getNettyChannel(p).pipeline();
@@ -85,40 +86,38 @@ public class CrazyAdvancementPacketReceiver {
 	        return false;
 	    }
 	}
-	
-	public HashMap<String, ChannelHandler> getHandlers() {
+
+	@Override
+	public Map<String, ChannelHandler> getHandlers() {
 		return handlers;
 	}
-	
+
+	@Override
 	public void initPlayer(Player p) {
-		handlers.put(p.getName(), listen(p, new PacketReceivingHandler() {
-			
-			@Override
-			public boolean handle(Player p, PacketPlayInAdvancements packet) {
-				
-				if(packet.c() == Status.OPENED_TAB) {
-					NameKey name = new NameKey(packet.d());
-					AdvancementTabChangeEvent event = new AdvancementTabChangeEvent(p, name);
-					Bukkit.getPluginManager().callEvent(event);
-					
-					if(event.isCancelled()) {
-						CrazyAdvancements.clearActiveTab(p);
-						return false;
-					} else {
-						if(!event.getTabAdvancement().equals(name)) {
-							CrazyAdvancements.setActiveTab(p, event.getTabAdvancement());
-						} else {
-							CrazyAdvancements.setActiveTab(p, name, false);
-						}
-					}
+		handlers.put(p.getName(), listen(p, (p1, packet) -> {
+
+			if(packet.c() == Status.OPENED_TAB) {
+				NameKey name = new NameKey(packet.d());
+				AdvancementTabChangeEvent event = new AdvancementTabChangeEvent(p1, name);
+				Bukkit.getPluginManager().callEvent(event);
+
+				if(event.isCancelled()) {
+					CrazyAdvancements.clearActiveTab(p1);
+					return false;
 				} else {
-					AdvancementScreenCloseEvent event = new AdvancementScreenCloseEvent(p);
-					Bukkit.getPluginManager().callEvent(event);
+					if(!event.getTabAdvancement().equals(name)) {
+						CrazyAdvancements.setActiveTab(p1, event.getTabAdvancement());
+					} else {
+						CrazyAdvancements.setActiveTab(p1, name, false);
+					}
 				}
-				
-				
-				return true;
+			} else {
+				AdvancementScreenCloseEvent event = new AdvancementScreenCloseEvent(p1);
+				Bukkit.getPluginManager().callEvent(event);
 			}
+
+
+			return true;
 		}));
 	}
 	
