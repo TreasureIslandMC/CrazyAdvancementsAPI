@@ -59,7 +59,7 @@ public class CrazyAdvancementPacketReceiver implements AdvancementPacketReceiver
 				out.add(packet);
 			}
 		};
-		pipe.addAfter("decoder", "endercentral_crazy_advancements_listener_" + hashCode(), handle);
+		pipe.addAfter("decoder", "endercentral_crazyadvancements_listener_" + hashCode(), handle);
 		
 		
 		return handle;
