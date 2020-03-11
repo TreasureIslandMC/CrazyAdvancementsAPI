@@ -1,13 +1,12 @@
-package eu.endercentral.crazyadvancements.api.events;
+package eu.endercentral.crazyadvancements.implementation.events;
 
+import eu.endercentral.crazyadvancements.api.advancement.Advancement;
+import eu.endercentral.crazyadvancements.api.manager.AdvancementManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
-import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
-
-public class CriteriaGrantEvent extends Event {
+public class CriteriaRevokeEvent extends Event {
 	
 	public static final HandlerList handlers = new HandlerList();
 	
@@ -21,12 +20,12 @@ public class CriteriaGrantEvent extends Event {
 	}
 	
 	
-	private final CrazyAdvancementManager manager;
-	private final CrazyAdvancement advancement;
+	private final AdvancementManager manager;
+	private final Advancement advancement;
 	private final String[] criteria;
 	private final Player player;
 	
-	public CriteriaGrantEvent(CrazyAdvancementManager manager, CrazyAdvancement advancement, String[] criteria, Player player) {
+	public CriteriaRevokeEvent(AdvancementManager manager, Advancement advancement, String[] criteria, Player player) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.criteria = criteria;
@@ -37,7 +36,7 @@ public class CriteriaGrantEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public CrazyAdvancementManager getManager() {
+	public AdvancementManager getManager() {
 		return manager;
 	}
 	
@@ -45,13 +44,13 @@ public class CriteriaGrantEvent extends Event {
 	 * 
 	 * @return Advancement
 	 */
-	public CrazyAdvancement getAdvancement() {
+	public Advancement getAdvancement() {
 		return advancement;
 	}
 	
 	/**
 	 * 
-	 * @return Granted Criteria
+	 * @return Revoked Criteria
 	 */
 	public String[] getCriteria() {
 		return criteria;

@@ -1,4 +1,4 @@
-package eu.endercentral.crazyadvancements.api.events;
+package eu.endercentral.crazyadvancements.implementation.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

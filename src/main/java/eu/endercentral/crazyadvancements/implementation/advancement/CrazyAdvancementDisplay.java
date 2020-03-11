@@ -205,7 +205,7 @@ public class CrazyAdvancementDisplay implements AdvancementDisplay {
 	public CrazyAdvancementDisplay(ItemStack icon, String title, String description, CrazyAdvancementFrame frame, String backgroundTexture, boolean showToast, boolean announceChat, AdvancementVisibility visibility) {
 		this.icon = icon;
 		this.iconID = icon.getType();
-		if(title.contains("�")) title += "�a";
+		if(title.contains("§")) title += "§a";
 		this.title = new JSONMessage("{\"text\":\"" + title.replaceAll("\"", "\\\"") + "\"}");
 		this.description = new JSONMessage("{\"text\":\"" + description.replaceAll("\"", "\\\"") + "\"}");
 		this.frame = frame;

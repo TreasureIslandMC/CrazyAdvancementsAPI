@@ -1,13 +1,13 @@
-package eu.endercentral.crazyadvancements.api.events;
+package eu.endercentral.crazyadvancements.implementation.events.offline;
 
-import org.bukkit.entity.Player;
+import java.util.UUID;
+
+import eu.endercentral.crazyadvancements.api.advancement.Advancement;
+import eu.endercentral.crazyadvancements.api.manager.AdvancementManager;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
-import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
-
-public class CriteriaProgressChangeEvent extends Event {
+public class OfflineCriteriaProgressChangeEvent extends Event {
 	
 	public static final HandlerList handlers = new HandlerList();
 	
@@ -21,16 +21,16 @@ public class CriteriaProgressChangeEvent extends Event {
 	}
 	
 	
-	private final CrazyAdvancementManager manager;
-	private final CrazyAdvancement advancement;
-	private final Player player;
+	private final AdvancementManager manager;
+	private final Advancement advancement;
+	private final UUID uuid;
 	private final int progressBefore;
 	private int progress;
 	
-	public CriteriaProgressChangeEvent(CrazyAdvancementManager manager, CrazyAdvancement advancement, Player player, int progressBefore, int progress) {
+	public OfflineCriteriaProgressChangeEvent(AdvancementManager manager, Advancement advancement, UUID uuid, int progressBefore, int progress) {
 		this.manager = manager;
 		this.advancement = advancement;
-		this.player = player;
+		this.uuid = uuid;;
 		this.progressBefore = progressBefore;
 		this.progress = progress;
 	}
@@ -39,7 +39,7 @@ public class CriteriaProgressChangeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public CrazyAdvancementManager getManager() {
+	public AdvancementManager getManager() {
 		return manager;
 	}
 	
@@ -47,16 +47,16 @@ public class CriteriaProgressChangeEvent extends Event {
 	 * 
 	 * @return The Advancement that has been granted
 	 */
-	public CrazyAdvancement getAdvancement() {
+	public Advancement getAdvancement() {
 		return advancement;
 	}
 	
 	/**
 	 * 
-	 * @return Reciever
+	 * @return Reciever UUID
 	 */
-	public Player getPlayer() {
-		return player;
+	public UUID getUUID() {
+		return uuid;
 	}
 	
 	/**

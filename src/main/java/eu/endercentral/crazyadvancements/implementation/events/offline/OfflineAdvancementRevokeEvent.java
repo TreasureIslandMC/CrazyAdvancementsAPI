@@ -1,12 +1,11 @@
-package eu.endercentral.crazyadvancements.api.events.offline;
+package eu.endercentral.crazyadvancements.implementation.events.offline;
 
 import java.util.UUID;
 
+import eu.endercentral.crazyadvancements.api.advancement.Advancement;
+import eu.endercentral.crazyadvancements.api.manager.AdvancementManager;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancement;
-import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancementManager;
 
 public class OfflineAdvancementRevokeEvent extends Event {
 	
@@ -22,11 +21,11 @@ public class OfflineAdvancementRevokeEvent extends Event {
 	}
 	
 	
-	private final CrazyAdvancementManager manager;
-	private final CrazyAdvancement advancement;
+	private final AdvancementManager manager;
+	private final Advancement advancement;
 	private final UUID uuid;
 	
-	public OfflineAdvancementRevokeEvent(CrazyAdvancementManager manager, CrazyAdvancement advancement, UUID uuid) {
+	public OfflineAdvancementRevokeEvent(AdvancementManager manager, Advancement advancement, UUID uuid) {
 		this.manager = manager;
 		this.advancement = advancement;
 		this.uuid = uuid;
@@ -36,7 +35,7 @@ public class OfflineAdvancementRevokeEvent extends Event {
 	 * 
 	 * @return The Manager this event has been fired from
 	 */
-	public CrazyAdvancementManager getManager() {
+	public AdvancementManager getManager() {
 		return manager;
 	}
 	
@@ -44,7 +43,7 @@ public class OfflineAdvancementRevokeEvent extends Event {
 	 * 
 	 * @return The Advancement that has been revoked
 	 */
-	public CrazyAdvancement getAdvancement() {
+	public Advancement getAdvancement() {
 		return advancement;
 	}
 	

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import javax.annotation.Nullable;
 
 import eu.endercentral.crazyadvancements.api.advancement.Advancement;
 import eu.endercentral.crazyadvancements.api.advancement.AdvancementReward;
@@ -39,6 +38,7 @@ import net.minecraft.server.v1_15_R1.ItemStack;
 import net.minecraft.server.v1_15_R1.MinecraftKey;
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
+import org.jetbrains.annotations.Nullable;
 
 public class CrazyAdvancement implements Advancement {
 	

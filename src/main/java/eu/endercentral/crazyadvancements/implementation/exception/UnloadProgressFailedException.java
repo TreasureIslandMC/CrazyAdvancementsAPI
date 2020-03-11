@@ -1,4 +1,4 @@
-package eu.endercentral.crazyadvancements.api.exception;
+package eu.endercentral.crazyadvancements.implementation.exception;
 
 import java.util.UUID;
 

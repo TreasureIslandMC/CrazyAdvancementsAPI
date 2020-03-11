@@ -13,8 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import eu.endercentral.crazyadvancements.api.events.AdvancementScreenCloseEvent;
-import eu.endercentral.crazyadvancements.api.events.AdvancementTabChangeEvent;
+import eu.endercentral.crazyadvancements.implementation.events.AdvancementScreenCloseEvent;
+import eu.endercentral.crazyadvancements.implementation.events.AdvancementTabChangeEvent;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -64,6 +64,7 @@ public class CrazyAdvancementPacketReceiver implements AdvancementPacketReceiver
 		
 		return handle;
 	}
+
 	@Override
 	public Channel getNettyChannel(Player p) {
 	    NetworkManager manager = ((CraftPlayer)p).getHandle().playerConnection.networkManager;
