@@ -55,6 +55,7 @@ import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
 
 public class CrazyAdvancementManager implements AdvancementManager {
+	private CrazyAdvancements plugin = CrazyAdvancements.getInstance();
 
 	private static HashMap<String, CrazyAdvancementManager> accessible = new HashMap<>();
 
@@ -416,14 +417,14 @@ public class CrazyAdvancementManager implements AdvancementManager {
 	@Override
 	public void update(Player player) {
 		if (players.contains(player)) {
-			NameKey rootAdvancement = CrazyAdvancements.getActiveTab(player);
-			CrazyAdvancements.clearActiveTab(player);
+			NameKey rootAdvancement = plugin.getActiveTab(player);
+			plugin.clearActiveTab(player);
 			addPlayer(player);
 			Bukkit.getScheduler().runTaskLater(CrazyAdvancements.getInstance(), new Runnable() {
 
 				@Override
 				public void run() {
-					CrazyAdvancements.setActiveTab(player, rootAdvancement);
+					plugin.setActiveTab(player, rootAdvancement);
 				}
 			}, 5);
 		}
@@ -437,14 +438,14 @@ public class CrazyAdvancementManager implements AdvancementManager {
 	 */
 	public void update(Player player, NameKey tab) {
 		if (players.contains(player)) {
-			NameKey rootAdvancement = CrazyAdvancements.getActiveTab(player);
-			CrazyAdvancements.clearActiveTab(player);
+			NameKey rootAdvancement = plugin.getActiveTab(player);
+			plugin.clearActiveTab(player);
 			addPlayer(player, tab);
 			Bukkit.getScheduler().runTaskLater(CrazyAdvancements.getInstance(), new Runnable() {
 
 				@Override
 				public void run() {
-					CrazyAdvancements.setActiveTab(player, rootAdvancement);
+					plugin.setActiveTab(player, rootAdvancement);
 				}
 			}, 5);
 		}
@@ -881,7 +882,7 @@ public class CrazyAdvancementManager implements AdvancementManager {
 		advancement.setAwardedCriteria(awardedCriteria);
 
 		if (fireEvent) {
-			boolean announceChat = advancement.getDisplay().isAnnouncedToChat() && CrazyAdvancements.getInitiatedPlayers().contains(player) && CrazyAdvancements.isAnnounceAdvancementMessages() && isAnnounceAdvancementMessages();
+			boolean announceChat = advancement.getDisplay().isAnnouncedToChat() && CrazyAdvancements.getInitiatedPlayers().contains(player) && plugin.isAnnounceAdvancementMessages() && isAnnounceAdvancementMessages();
 
 			AdvancementGrantEvent event = new AdvancementGrantEvent(this, advancement, player, announceChat);
 			Bukkit.getPluginManager().callEvent(event);
@@ -1206,7 +1207,7 @@ public class CrazyAdvancementManager implements AdvancementManager {
 	}
 
 	private String getSavePath(Player player, String namespace) {
-		return getSaveDirectory(namespace) + (CrazyAdvancements.isUseUUID() ? player.getUniqueId() : player.getName()) + ".json";
+		return getSaveDirectory(namespace) + (plugin.isUseUUID() ? player.getUniqueId() : player.getName()) + ".json";
 	}
 
 	private String getSaveDirectory(String namespace) {

@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import eu.endercentral.crazyadvancements.api.AdvancementPlugin;
 import eu.endercentral.crazyadvancements.api.advancement.AdvancementVisibility;
+import eu.endercentral.crazyadvancements.api.manager.AdvancementManager;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementDisplay;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementFrame;
 import eu.endercentral.crazyadvancements.implementation.advancement.CrazyAdvancementPacketReceiver;
@@ -26,7 +28,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -35,7 +36,7 @@ import eu.endercentral.crazyadvancements.implementation.manager.CrazyAdvancement
 import net.minecraft.server.v1_15_R1.PacketPlayOutAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayOutSelectAdvancementTab;
 
-public class CrazyAdvancements extends JavaPlugin implements Listener {
+public class CrazyAdvancements extends AdvancementPlugin implements Listener {
 	
 	private static CrazyAdvancements instance;
 	
@@ -48,12 +49,12 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	private static HashMap<String, NameKey> openedTabs = new HashMap<>();
 	
 	
-	private static boolean useUUID;
+	private boolean useUUID;
 	
 	
 	@Override
 	public void onLoad() {
-		instance = this;
+		CrazyAdvancements.instance = this;
 		fileAdvancementManager = CrazyAdvancementManager.getNewAdvancementManager();
 	}
 	
@@ -127,7 +128,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * @param players All players that should be in the new manager from the start, can be changed at any time
 	 * @return the generated advancement manager
 	 */
-	public static CrazyAdvancementManager getNewAdvancementManager(Player... players) {
+	public CrazyAdvancementManager getNewAdvancementManager(Player... players) {
 		return CrazyAdvancementManager.getNewAdvancementManager(players);
 	}
 	
@@ -136,7 +137,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * 
 	 * @param player The player whose Tab should be cleared
 	 */
-	public static void clearActiveTab(Player player) {
+	public void clearActiveTab(Player player) {
 		setActiveTab(player, null, true);
 	}
 	
@@ -146,7 +147,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * @param player The player whose Tab should be changed
 	 * @param rootAdvancement The name of the tab to change to
 	 */
-	public static void setActiveTab(Player player, String rootAdvancement) {
+	public void setActiveTab(Player player, String rootAdvancement) {
 		setActiveTab(player, new NameKey(rootAdvancement));
 	}
 	
@@ -156,11 +157,11 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * @param player The player whose Tab should be changed
 	 * @param rootAdvancement The name of the tab to change to
 	 */
-	public static void setActiveTab(Player player, NameKey rootAdvancement) {
+	public void setActiveTab(Player player, NameKey rootAdvancement) {
 		setActiveTab(player, rootAdvancement, true);
 	}
 	
-	public static void setActiveTab(Player player, NameKey rootAdvancement, boolean update) {
+	public void setActiveTab(Player player, NameKey rootAdvancement, boolean update) {
 		if(update) {
 			PacketPlayOutSelectAdvancementTab packet = new PacketPlayOutSelectAdvancementTab(rootAdvancement == null ? null : rootAdvancement.getMinecraftKey());
 			((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
@@ -169,11 +170,10 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	}
 	
 	/**
-	 * 
 	 * @param player Player to check
 	 * @return The active Tab
 	 */
-	public static NameKey getActiveTab(Player player) {
+	public NameKey getActiveTab(Player player) {
 		return openedTabs.get(player.getName());
 	}
 	
@@ -195,7 +195,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	}
 	
 	@Warning(reason = "Unsafe")
-	public static ArrayList<Player> getInitiatedPlayers() {
+	public static List<Player> getInitiatedPlayers() {
 		return initiatedPlayers;
 	}
 	
@@ -207,7 +207,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * 
 	 * @return <b>true</b> if advancement messages should be shown by default<br><b>false</b> if all advancement messages will be hidden
 	 */
-	public static boolean isAnnounceAdvancementMessages() {
+	public boolean isAnnounceAdvancementMessages() {
 		return announceAdvancementMessages;
 	}
 	
@@ -216,7 +216,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * 
 	 * @param announceAdvancementMessages
 	 */
-	public static void setAnnounceAdvancementMessages(boolean announceAdvancementMessages) {
+	public void setAnnounceAdvancementMessages(boolean announceAdvancementMessages) {
 		CrazyAdvancements.announceAdvancementMessages = announceAdvancementMessages;
 	}
 	
@@ -224,7 +224,7 @@ public class CrazyAdvancements extends JavaPlugin implements Listener {
 	 * 
 	 * @return <b>true</b> if Player Progress is saved by their UUID<br><b>false</b> if Player Progress is saved by their Name (not recommended)<br><b>Saving and Loading Progress via UUID will might not work as expected with this Setting!!<b>
 	 */
-	public static boolean isUseUUID() {
+	public boolean isUseUUID() {
 		return useUUID;
 	}
 	

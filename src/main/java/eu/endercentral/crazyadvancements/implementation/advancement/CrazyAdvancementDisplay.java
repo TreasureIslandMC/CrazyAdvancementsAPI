@@ -15,7 +15,8 @@ import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.Nullable;
 
 public class CrazyAdvancementDisplay implements AdvancementDisplay {
-	
+	private CrazyAdvancements plugin = CrazyAdvancements.getInstance();
+
 	@SerializedName("icon")
 	private Material iconID;
 	private transient ItemStack icon;
@@ -261,7 +262,7 @@ public class CrazyAdvancementDisplay implements AdvancementDisplay {
 	 */
 	@Override
 	public boolean isAnnouncedToChat() {
-		return announceChat && CrazyAdvancements.isAnnounceAdvancementMessages();
+		return announceChat && plugin.isAnnounceAdvancementMessages();
 	}
 	
 	/**
