@@ -26,6 +26,7 @@ import net.minecraft.server.v1_15_R1.PacketPlayInAdvancements;
 import net.minecraft.server.v1_15_R1.PacketPlayInAdvancements.Status;
 
 public class CrazyAdvancementPacketReceiver implements AdvancementPacketReceiver {
+	private CrazyAdvancements plugin = CrazyAdvancements.getInstance();
 	
 	private static HashMap<String, ChannelHandler> handlers = new HashMap<>();
 	private static Field channelField;
@@ -103,13 +104,13 @@ public class CrazyAdvancementPacketReceiver implements AdvancementPacketReceiver
 				Bukkit.getPluginManager().callEvent(event);
 
 				if(event.isCancelled()) {
-					CrazyAdvancements.clearActiveTab(p1);
+					plugin.clearActiveTab(p1);
 					return false;
 				} else {
 					if(!event.getTabAdvancement().equals(name)) {
-						CrazyAdvancements.setActiveTab(p1, event.getTabAdvancement());
+						plugin.setActiveTab(p1, event.getTabAdvancement());
 					} else {
-						CrazyAdvancements.setActiveTab(p1, name, false);
+						plugin.setActiveTab(p1, name, false);
 					}
 				}
 			} else {
